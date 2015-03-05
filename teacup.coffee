@@ -6,13 +6,13 @@ rename    = require "gulp-rename"
 
 defaults  = require './defaults'
 
-options = defaults 'html',
+options = defaults 'teacup',
   sources     : 'html/**/*'
   destination : 'build/'
 
 module.exports = options
 
-gulp.task 'html', ->
+gulp.task 'teacup', ->
   gulp
     .src options.sources, read: no
     .pipe through.obj (file, enc, done) ->
@@ -25,4 +25,4 @@ gulp.task 'html', ->
       @push file
       do done
     .pipe rename extname: '.html'
-    .pipe gulp.dest destinations.html
+    .pipe gulp.dest options.destination
