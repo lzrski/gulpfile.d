@@ -1,41 +1,44 @@
-gulp    = require 'gulp'
-_       = require 'lodash'
-cp      = require 'child_process'
-{log}   = require 'gulp-util'
-run     = require 'run-sequence'
+gulp      = require 'gulp'
+_         = require 'lodash'
+cp        = require 'child_process'
+{log}     = require 'gulp-util'
+run       = require 'run-sequence'
+defaults  = require './defaults'
 
 # Try to read paths from parent module (main gulp file)
 settings = module.parent?.exports or {}
+backend = require './backend' # task module should export it's options
 
 server = null
 gulp.task 'serve', ->
-  options = _.defaults settings.backend or {},
-    sources     : 'backend/**/*'
-    main        : 'build/app.js' # TODO: read it from package.json
-
   if server
     log 'Restarting server'
     do server.kill
     server = null
 
-  server = cp.fork options.main
+  server = cp.fork backend.main
 
 # Watch
 gulp.task 'develop', (done) ->
 
   run 'build', 'serve', (done) ->
 
-    for task, options of settings when task isnt 'develop'
+    for task of settings when task isnt 'develop'
+      options = require "./#{task}"
       log "Watching #{options.sources} for #{task}"
       gulp.watch options.sources, [task]
 
-    log "Watching #{settings.backend.main} for serve"
-    gulp.watch settings.backend.main, ['serve']
+    log "Watching #{backend.main} for serve"
+    gulp.watch backend.main, ['serve']
 
+    # No risk here.
+    # If there is no bower.json file, then it will never fire.
+    # Huh?
     log "Watching bower.json for bower"
     gulp.watch 'bower.json', ['bower']
 
   process.on 'exit', ->
+    # Make sure logs look nice :)
     console.log ''
     do done
     do process.exit

@@ -1,11 +1,13 @@
-gulp    = require 'gulp'
-bower   = require 'gulp-bower'
-_       = require 'lodash'
+gulp      = require 'gulp'
+bower     = require 'gulp-bower'
 
-# Try to read paths from parent module (main gulp file)
-options = _.defaults module.parent?.exports?.assets,
+defaults  = require './defaults'
+
+options = defaults 'assets',
   sources     : 'assets/**/*'
   destination : 'build/public/'
+
+module.exports = options
 
 gulp.task 'bower', ->
   bower()

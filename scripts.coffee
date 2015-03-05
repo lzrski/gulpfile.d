@@ -1,13 +1,14 @@
-gulp    = require 'gulp'
+gulp      = require 'gulp'
 
-srcmaps = require 'gulp-sourcemaps'
-coffee  = require 'gulp-coffee'
-_       = require 'lodash'
+srcmaps   = require 'gulp-sourcemaps'
+coffee    = require 'gulp-coffee'
+defaults  = require './defaults'
 
-# Try to read paths from parent module (main gulp file)
-options = _.defaults module.parent?.exports?.scripts,
+options   = defaults 'scripts',
   sources     : 'scripts/**/*'
   destination : 'build/public/'
+
+module.exports = options
 
 gulp.task 'scripts', ->
   gulp
