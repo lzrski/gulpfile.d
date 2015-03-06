@@ -1,5 +1,4 @@
 gulp      = require 'gulp'
-bower     = require 'gulp-bower'
 
 defaults  = require './defaults'
 
@@ -9,11 +8,7 @@ options = defaults 'assets',
 
 module.exports = options
 
-gulp.task 'bower', ->
-  bower()
-    .pipe gulp.dest options.destination
-
-gulp.task 'assets', ['bower'], ->
+gulp.task 'assets', ->
   gulp
     .src  options.sources
     .pipe gulp.dest options.destination
