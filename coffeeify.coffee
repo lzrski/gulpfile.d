@@ -57,7 +57,7 @@ gulp.task 'coffeeify', ['scan-scripts'], ->
     .on 'error', notify.onError (error) ->
       console.error error.message
       console.error error.stack
-      "Error building #{group}: #{error.message}"
+      "Error building scripts: #{error.message}"
     .pipe rename    path.basename options.destination
     .pipe gulp.dest path.dirname  options.destination
     .pipe notify "Done building"
