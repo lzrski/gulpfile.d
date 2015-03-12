@@ -44,7 +44,6 @@ gulp.task 'coffeeify', ['scan-scripts'], ->
       #
       # You can turn this feature off by setting sources option to false
 
-      log 'Requiring', scripts
       for script in scripts
         # Expose index scripts as their dirnames
         # to mimic node's package name resolution mechanism
