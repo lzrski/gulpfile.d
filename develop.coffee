@@ -1,3 +1,5 @@
+# This is probably too complicated and project specific to generalize.
+
 gulp      = require 'gulp'
 _         = require 'lodash'
 cp        = require 'child_process'
