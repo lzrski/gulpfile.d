@@ -53,6 +53,26 @@ gulp.task 'coffeeify', ['scan-scripts'], ->
           expose = script
 
         bundle.require './' + script, {expose}
+
+      if options.config
+        # Generate config object and inject it into bundle
+        config  = require 'config-object'
+        temp    = require 'temp'
+        fs      = require 'fs'
+
+        # TODO: Make config files paths configurable via settings
+        config.load '../defaults.cson', required: yes
+        config.load '../package.json', required: yes, at: '/package'
+        config.load '../config.cson'
+
+        exposed = config.clone keys: config.expose
+        json = JSON.stringify do exposed.get
+
+        file = temp.openSync 'config'
+        fs.writeSync file.fd, "module.exports = #{json}"
+        fs.closeSync file.fd
+        bundle.require file.path, expose: 'config'
+
     .on 'error', notify.onError (error) ->
       console.error error.message
       console.error error.stack
