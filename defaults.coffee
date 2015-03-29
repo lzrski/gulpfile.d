@@ -10,13 +10,13 @@ module.exports = (task, defaults) ->
     task = undefined
 
   log "Loading settings for #{task or '*'}"
-  
+
   parent = module
-    .parent
-    ?.parent
+    .parent     # gulpfile.d module
+    ?.parent    # the module that required gulpfile.d module
     ?.exports
   parent ?= {}
 
-  settings = if task then parent[task] else parent
+  settings = if task then parent[task] or {} else parent
 
   return _.defaults settings, defaults
