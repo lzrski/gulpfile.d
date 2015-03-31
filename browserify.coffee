@@ -20,7 +20,7 @@ module.exports = (options = {}) ->
   options[key] ?= value for key, value of defaults
 
   ->
-    browserify debug: yes # options.debug
+    browserify options.debug
       .add path.resolve process.cwd(), options.entry
       .transform coffeeify
       # TODO: require scripts
@@ -31,7 +31,7 @@ module.exports = (options = {}) ->
       .pipe source path.basename options.entry
       .pipe rename extname: '.js'
       .pipe buffer()
-      .pipe sourcemaps.init loadMaps: yes
+      .pipe sourcemaps.init loadMaps: options.debug
       .pipe size title: 'before'
       .pipe uglify()
       .pipe size title: 'after'
