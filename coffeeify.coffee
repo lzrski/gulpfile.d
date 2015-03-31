@@ -10,6 +10,8 @@ notify      = require 'gulp-notify' # TODO: move notification logic to main gulp
 
 defaults    = require './defaults'
 
+log 'The gulpfile.d/coffeeify module is depreciated. Please used browserify instead.'
+
 options = defaults 'coffeeify',
   entry       : 'scripts/index'
   sources     : 'scripts/**/*'
